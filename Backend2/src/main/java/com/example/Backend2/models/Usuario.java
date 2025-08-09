@@ -2,15 +2,30 @@ package com.example.Backend2.models;
 
 import com.example.Backend2.helpers.Estado;
 import com.example.Backend2.helpers.Roles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "usuario")
 public class Usuario {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "nombre", length = 50, nullable = false)
     private String nombre;
+    @Column(name = "correo", length = 50, nullable = false, unique = true)
     private String correo;
+    @Column(name = "contraseña", length = 10, nullable = false)
     private String contraseña;
+    @Column(name = "rol", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Roles rol;
+    @Column(name = "estado", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Estado estado;
+    @OneToOne(mappedBy = "usuario")
+    @JsonBackReference(value = "relacionestudianteusuario")
+    private Estudiante estudiante;
 
     public Usuario() {
     }
